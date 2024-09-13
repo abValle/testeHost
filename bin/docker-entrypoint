@@ -1,7 +1,14 @@
 #!/bin/bash -e
-
+# -e faz com que o script saia imediatamente se qualquer comando falhar
 # If running the rails server then create or migrate existing database
+
+if [ -f tmp/pids/server.pid ]; then
+  rm -f tmp/pids/server.pid
+  bundle exec rails tmp:cache:clear
+fi
+
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
+  ./bin/rails db:create
   ./bin/rails db:prepare
 fi
 
